@@ -1,0 +1,9 @@
+.popup__label-input {
+  display: inline-block;
+  width: 100%;
+  min-height: 57px;
+}
+
+.popup__label-input:last-of-type {
+  min-height: 75px;
+}
