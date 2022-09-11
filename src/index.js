@@ -3,8 +3,8 @@ import './pages/index.css';
 import { initialCards, elementsContainer, cardAddPopup, cardAddPopupOpenButton, cardAddPopupCloseButton,
   cardAddPopupForm, newCardImageInput, newCardTitleInput, profileEditButton, profileEditPopup,
   profileEditPopupCloseButton, profileEditPopupForm, nameInput, descriptionInput, profileName, profileDescription,
-  imagePopup, imagePopupDescription, imagePopupCloseButton, imagePopupPicture, popupsList } from './components/utils';
-import { addCard, pressLike, deleteCard } from './components/card';
+  imagePopup, imagePopupCloseButton, popupsList } from './components/utils';
+import { addCard } from './components/card';
 import { openPopup, closePopup, closePopupByOverlay } from './components/modal';
 import enableValidation from './components/validate';
 
@@ -14,21 +14,8 @@ function openProfileEditPopup(event, popup){
   openPopup(event, popup);
 };
 
-function openImagePopup(event, popup){
-  imagePopupDescription.textContent = event.target.parentElement.querySelector('.element__title').textContent;
-  imagePopupPicture.src = event.target.parentElement.querySelector('.element__image').style.backgroundImage.slice(5,-2);
-  openPopup(event, popup);
-};
-
-function setCardsListeners(card){
-  card.querySelector('.element__button-like').addEventListener('click', pressLike);
-  card.querySelector('.element__button-delete').addEventListener('click', deleteCard);
-  card.querySelector('.element__image').addEventListener('click', event => openImagePopup(event, imagePopup));
-  return card;
-}
-
 function renderCard(card) {
-  elementsContainer.prepend(setCardsListeners(addCard(card)));
+  elementsContainer.prepend(addCard(card));
 };
 
 function addCardSubmitHandler(event) {
