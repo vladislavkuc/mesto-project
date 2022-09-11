@@ -3,14 +3,19 @@ import './pages/index.css';
 import { initialCards, elementsContainer, cardAddPopup, cardAddPopupOpenButton, cardAddPopupCloseButton,
   cardAddPopupForm, newCardImageInput, newCardTitleInput, profileEditButton, profileEditPopup,
   profileEditPopupCloseButton, profileEditPopupForm, nameInput, descriptionInput, profileName, profileDescription,
-  imagePopup, imagePopupCloseButton, popupsList } from './components/utils';
+  imagePopup, imagePopupCloseButton, popupsList, validateSettings } from './components/utils';
 import { addCard } from './components/card';
 import { openPopup, closePopup, closePopupByOverlay } from './components/modal';
-import enableValidation from './components/validate';
+import { enableValidation, checkInputValidity, toggleButtonState } from './components/validate';
 
 function openProfileEditPopup(event, popup){
   nameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
+
+  checkInputValidity(profileEditPopupForm, nameInput, validateSettings);
+  checkInputValidity(profileEditPopupForm, descriptionInput, validateSettings);
+  toggleButtonState([nameInput, descriptionInput], popup.querySelector('.popup__button-save') ,validateSettings);
+
   openPopup(event, popup);
 };
 
@@ -39,14 +44,7 @@ function editProfileSubmitHandler(event) {
   closePopup(profileEditPopup);
 }
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button-save',
-  inactiveButtonClass: 'popup__button-save_disabled',
-  inputErrorClass: 'popup__text-input_type_error',
-  errorClass: 'popup__error_visible'
-});
+enableValidation(validateSettings);
 
 initialCards.reverse().forEach(card => renderCard(card));
 

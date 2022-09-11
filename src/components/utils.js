@@ -52,10 +52,18 @@ const imagePopupPicture = imagePopup.querySelector('.popup__image');
 const imagePopupCloseButton = imagePopup.querySelector('.popup__button-close');
 
 const popupsList = Array.from(document.querySelectorAll('.popup'));
+const validateSettings = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button-save',
+  inactiveButtonClass: 'popup__button-save_disabled',
+  inputErrorClass: 'popup__text-input_type_error',
+  errorClass: 'popup__error_visible'
+}
 
 export {
   elementCard, elementsContainer, cardAddPopup, cardAddPopupOpenButton, cardAddPopupCloseButton,
   cardAddPopupForm, newCardImageInput, newCardTitleInput, profileContainer, profileEditButton, profileEditPopup,
   profileEditPopupCloseButton, profileEditPopupForm, nameInput, descriptionInput, profileName, profileDescription,
-  imagePopup, imagePopupDescription, imagePopupCloseButton, imagePopupPicture, popupsList,
+  imagePopup, imagePopupDescription, imagePopupCloseButton, imagePopupPicture, popupsList, validateSettings,
 }
