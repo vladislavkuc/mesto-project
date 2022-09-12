@@ -42,6 +42,16 @@ export const toggleButtonState = (inputList, buttonElement, validateSettings) =>
   }
 };
 
+export const resetFormState = (popup, validateSettings, checkInputsFlag) => {
+  const inputList = Array.from(popup.querySelectorAll(validateSettings.inputSelector));
+  toggleButtonState(inputList, popup.querySelector(validateSettings.submitButtonSelector), validateSettings);
+
+  if (checkInputsFlag){
+    const formElement = popup.querySelector(validateSettings.formSelector)
+    inputList.forEach(inputElement => checkInputValidity(formElement, inputElement, validateSettings));
+  }
+};
+
 const setEventListeners = (formElement, validateSettings) => {
   const inputList = Array.from(formElement.querySelectorAll(validateSettings.inputSelector));
   const buttonElement = formElement.querySelector(validateSettings.submitButtonSelector);
