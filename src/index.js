@@ -6,18 +6,20 @@ import { initialCards, elementsContainer, cardAddPopup, cardAddPopupOpenButton, 
   imagePopup, imagePopupCloseButton, popupsList, validateSettings } from './components/utils';
 import { addCard } from './components/card';
 import { openPopup, closePopup, closePopupByOverlay } from './components/modal';
-import { enableValidation, checkInputValidity, toggleButtonState } from './components/validate';
+import { enableValidation, resetFormState} from './components/validate';
 
 function openProfileEditPopup(event, popup){
   nameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
 
-  checkInputValidity(profileEditPopupForm, nameInput, validateSettings);
-  checkInputValidity(profileEditPopupForm, descriptionInput, validateSettings);
-  toggleButtonState([nameInput, descriptionInput], popup.querySelector('.popup__button-save') ,validateSettings);
-
+  resetFormState(popup, validateSettings, true);
   openPopup(event, popup);
 };
+
+function openAddCardPopup(event, popup){
+  resetFormState(popup, validateSettings, false);
+  openPopup(event, popup);
+}
 
 function renderCard(card) {
   elementsContainer.prepend(addCard(card));
@@ -48,7 +50,7 @@ enableValidation(validateSettings);
 
 initialCards.reverse().forEach(card => renderCard(card));
 
-cardAddPopupOpenButton.addEventListener('click', event => { openPopup(event, cardAddPopup) });
+cardAddPopupOpenButton.addEventListener('click', event => { openAddCardPopup(event, cardAddPopup) });
 cardAddPopupCloseButton.addEventListener('click', () => { closePopup(cardAddPopup) });
 cardAddPopupForm.addEventListener('submit', addCardSubmitHandler);
 
