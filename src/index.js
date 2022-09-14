@@ -1,24 +1,14 @@
 import './pages/index.css';
 
-import { elementsContainer, cardAddPopup, cardAddPopupOpenButton, cardAddPopupCloseButton,
-  cardAddPopupForm, newCardImageInput, newCardTitleInput, profileEditButton, profileEditPopup,
-  profileEditPopupCloseButton, profileEditPopupForm, nameInput, descriptionInput, profileName, profileDescription,
-  imagePopup, imagePopupCloseButton, popupsList, validateSettings, profileAvatar, profileAvatarOverlay, avatarEditPopup,
-  avatarEditForm, } from './components/utils';
+import { elementsContainer, cardAddPopup, cardAddPopupOpenButton,
+  cardAddPopupForm, newCardImageInput, newCardTitleInput, profileEditButton,
+  profileEditPopup, profileEditPopupForm, nameInput, descriptionInput, profileName, profileDescription,
+  popupsList, validateSettings, profileAvatar, profileAvatarOverlay, avatarEditPopup,
+  avatarEditForm, cardSaveButton, avatarSaveButton, avatarLinkInput } from './components/utils';
 import { addCard } from './components/card';
-import { openPopup, closePopup, closePopupByOverlay } from './components/modal';
+import { openPopup, closePopup} from './components/modal';
 import { enableValidation, resetFormState } from './components/validate';
 import { getProfileInfo, getCards, patchProfileInput, sendCard, removeCardFromServer, toggleLike, changeAvatar } from './components/api.js';
-
-function renderProfile(){
-  getProfileInfo()
-    .then(data => {
-      profileName.textContent = data.name;
-      profileDescription.textContent = data.about;
-      profileAvatar.src = data.avatar;
-    })
-    .catch((err) => console.log(err));
-};
 
 function openComplexPopup(event, popup){
   resetFormState(popup, validateSettings, false);
@@ -36,36 +26,39 @@ function renderCard(card, userId) {
   elementsContainer.prepend(addCard(card, userId));
 };
 
-function renderCards(){
-  getProfileInfo()
-    .then(profile => {
-      getCards()
-      .then(cards => {
-        cards.reverse().forEach(card => renderCard(card, profile));
-      })
-      .catch((err) => console.log(err));
+function renderPage(){
+  Promise.all([getProfileInfo(), getCards()])
+    .then(([userData, cards]) => {
+      profileName.textContent = userData.name;
+      profileDescription.textContent = userData.about;
+      profileAvatar.src = userData.avatar;
+
+      cards.reverse().forEach(card => renderCard(card, userData));
     })
-    .catch((err) => console.log(err));
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 export function deleteCard(cardId){
   removeCardFromServer(cardId)
-    .then(() => renderCards())
+    .then(() => renderPage())
     .catch((err) => console.log(err));
 };
 
 function addCardSubmitHandler(event) {
   event.preventDefault();
-  const saveButton = cardAddPopup.querySelector('.popup__button-save');
-  saveButton.textContent = 'Сохранение...';
+  cardSaveButton.textContent = 'Сохранение...';
 
   sendCard(newCardTitleInput.value, newCardImageInput.value)
-    .then(() => renderCards())
-    .catch((err) => console.log(err))
-    .finally(() => {
+    .then(() => {
       cardAddPopupForm.reset();
       closePopup(cardAddPopup);
-      saveButton.textContent = 'Сохранить';
+      renderPage();
+    })
+    .catch((err) => console.log(err))
+    .finally(() => {
+      cardSaveButton.textContent = 'Сохранить';
     });
 };
 
@@ -76,10 +69,12 @@ function editProfileSubmitHandler(event) {
   saveButton.textContent = 'Сохранение...';
 
   patchProfileInput(nameInput.value, descriptionInput.value)
-    .then(() => renderProfile())
+    .then(() => {
+      closePopup(profileEditPopup);
+      renderPage();
+    })
     .catch((err) => console.log(err))
     .finally(() => {
-      closePopup(profileEditPopup);
       saveButton.textContent = 'Сохранить';
     });
 };
@@ -87,16 +82,17 @@ function editProfileSubmitHandler(event) {
 function changeAvatarSubmitHadler(event) {
   event.preventDefault();
 
-  const saveButton = avatarEditPopup.querySelector('.popup__button-save');
-  saveButton.textContent = 'Сохранение...';
+  avatarSaveButton.textContent = 'Сохранение...';
 
-  changeAvatar(avatarEditForm.querySelector('.popup__text-input').value)
-    .then(() => renderProfile())
-    .catch((err) => console.log(err))
-    .finally(() => {
+  changeAvatar(avatarLinkInput.value)
+    .then(() => {
       closePopup(avatarEditPopup);
       avatarEditForm.reset();
-      saveButton.textContent = 'Сохранить';
+      renderPage();
+    })
+    .catch((err) => console.log(err))
+    .finally(() => {
+      avatarSaveButton.textContent = 'Сохранить';
     });
 };
 
@@ -111,7 +107,7 @@ export function pressLikeHandler(evt, card){
           .then(freshedCard => {
             likeButton.classList.remove('element__button-like_active');
             countLikes.textContent = freshedCard.likes.length;
-            likeButton.addEventListener('click', evt => { pressLikeHandler(evt, freshedCard) }, {once : true});
+            card.likes = freshedCard.likes;
           })
           .catch((err) => console.log(err))
       } else {
@@ -119,7 +115,7 @@ export function pressLikeHandler(evt, card){
           .then(freshedCard => {
             likeButton.classList.add('element__button-like_active');
             countLikes.textContent = freshedCard.likes.length;
-            likeButton.addEventListener('click', evt => { pressLikeHandler(evt, freshedCard) }, {once : true});
+            card.likes = freshedCard.likes;
           })
           .catch((err) => console.log(err))
       }
@@ -127,25 +123,28 @@ export function pressLikeHandler(evt, card){
     .catch((err) => console.log(err));
 };
 
-renderProfile();
-renderCards();
+renderPage();
 enableValidation(validateSettings);
 
 
 cardAddPopupOpenButton.addEventListener('click', event => { openComplexPopup(event, cardAddPopup) });
-cardAddPopupCloseButton.addEventListener('click', () => { closePopup(cardAddPopup) });
 cardAddPopupForm.addEventListener('submit', addCardSubmitHandler);
 
-imagePopupCloseButton.addEventListener('click', () => { closePopup(imagePopup) });
-
 profileEditButton.addEventListener('click', event => { openProfileEditPopup(event, profileEditPopup) });
-profileEditPopupCloseButton.addEventListener('click', () => { closePopup(profileEditPopup) });
 profileEditPopupForm.addEventListener('submit', editProfileSubmitHandler);
 
 profileAvatar.addEventListener('mouseover', () => profileAvatarOverlay.classList.add('profile__avatar-overlay_visible'));
 profileAvatarOverlay.addEventListener('mouseleave', () => profileAvatarOverlay.classList.remove('profile__avatar-overlay_visible'));
 profileAvatarOverlay.addEventListener('click', event => openComplexPopup(event, avatarEditPopup));
 avatarEditForm.addEventListener('submit', changeAvatarSubmitHadler);
-avatarEditPopup.querySelector('.popup__button-close').addEventListener('click', () => closePopup(avatarEditPopup));
 
-popupsList.forEach(popup => popup.addEventListener('click', closePopupByOverlay));
+popupsList.forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+      if (evt.target.classList.contains('popup_opened')) {
+          closePopup(popup)
+      }
+      if (evt.target.classList.contains('popup__button-close')) {
+        closePopup(popup)
+      }
+  })
+});

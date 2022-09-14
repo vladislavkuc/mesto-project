@@ -24,7 +24,7 @@ export function addCard(card, profile) {
     likeButton.classList.remove('element__button-like_active');
   }
 
-  likeButton.addEventListener('click', evt => { pressLikeHandler(evt, card) }, {once : true});
+  likeButton.addEventListener('click', evt => { pressLikeHandler(evt, card) });
   newCard.querySelector('.element__image').addEventListener('click', event => openImagePopup(event, imagePopup));
 
   return newCard;

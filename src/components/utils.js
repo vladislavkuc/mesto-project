@@ -3,15 +3,14 @@ const elementsContainer = document.querySelector('.elements');
 
 const cardAddPopup = document.querySelector('.popup_type_add-card');
 const cardAddPopupOpenButton = document.querySelector('.profile__add-button');
-const cardAddPopupCloseButton = cardAddPopup.querySelector('.popup__button-close');
 const cardAddPopupForm = cardAddPopup.querySelector('form[name="card-add-form"]');
 const newCardTitleInput = cardAddPopup.querySelector('input[name="title"]');
 const newCardImageInput = cardAddPopup.querySelector('input[name="image-link"]');
+const cardSaveButton = cardAddPopup.querySelector('.popup__button-save');
 
 const profileContainer = document.querySelector('.profile');
 const profileEditButton = profileContainer.querySelector('.profile__edit-button');
 const profileEditPopup = document.querySelector('.popup_type_edit-profile');
-const profileEditPopupCloseButton = profileEditPopup.querySelector('.popup__button-close');
 const profileEditPopupForm = profileEditPopup.querySelector('form[name="profile-edit-form"');
 
 const nameInput = profileEditPopup.querySelector('input[name="name"]');
@@ -23,11 +22,12 @@ const profileAvatarOverlay = profileContainer.querySelector('.profile__avatar-ov
 
 const avatarEditPopup = document.querySelector('.popup_type_change-avatar');
 const avatarEditForm = avatarEditPopup.querySelector('.popup__form');
+const avatarSaveButton = avatarEditPopup.querySelector('.popup__button-save');
+const avatarLinkInput = avatarEditForm.querySelector('.popup__text-input');
 
 const imagePopup = document.querySelector('.popup_type_show-image');
 const imagePopupDescription = imagePopup.querySelector('.popup__description');
 const imagePopupPicture = imagePopup.querySelector('.popup__image');
-const imagePopupCloseButton = imagePopup.querySelector('.popup__button-close');
 
 const popupsList = Array.from(document.querySelectorAll('.popup'));
 const validateSettings = {
@@ -40,9 +40,9 @@ const validateSettings = {
 }
 
 export {
-  elementCard, elementsContainer, cardAddPopup, cardAddPopupOpenButton, cardAddPopupCloseButton,
+  elementCard, elementsContainer, cardAddPopup, cardAddPopupOpenButton,
   cardAddPopupForm, newCardImageInput, newCardTitleInput, profileContainer, profileEditButton, profileEditPopup,
-  profileEditPopupCloseButton, profileEditPopupForm, nameInput, descriptionInput, profileName, profileDescription,
-  profileAvatar, imagePopup, imagePopupDescription, imagePopupCloseButton, imagePopupPicture, popupsList, validateSettings,
-  profileAvatarOverlay, avatarEditPopup, avatarEditForm
+  profileEditPopupForm, nameInput, descriptionInput, profileName, profileDescription,
+  profileAvatar, imagePopup, imagePopupDescription, imagePopupPicture, popupsList, validateSettings,
+  profileAvatarOverlay, avatarEditPopup, avatarEditForm, cardSaveButton, avatarSaveButton, avatarLinkInput,
 }
