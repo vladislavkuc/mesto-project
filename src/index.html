@@ -13,7 +13,12 @@
   </header>
   <main class="content">
     <section class="profile">
-      <img src="<%=require('./images/profile-avatar.jpg')%>" alt="Аватар профиля" class="profile__avatar">
+      <div class="profile__avatar-container">
+        <img src="<%=require('./images/profile-avatar.jpg')%>" alt="Аватар профиля" class="profile__avatar">
+        <div class="profile__avatar-overlay">
+          <img src="<%=require('./images/change-profile.svg')%>" alt="Иконка изменения аватара профиля" class="profile__change-avatar-image">
+        </div>
+      </div>
       <div class="profile__info">
         <h1 class="profile__name">Жак-Ив Кусто</h1>
         <button type="button" class="profile__edit-button"></button>
@@ -103,6 +108,28 @@
       <button type="button" class="popup__button-close"></button>
     </div>
   </div>
+  <div class="popup popup_type_change-avatar">
+    <div class="popup__container">
+      <h2 class="popup__title">Обновить аватар</h2>
+      <form name="change-avatar-form" class="popup__form">
+        <label class="popup__label-input">
+          <input
+            type="text"
+            placeholder="Ссылка на картинку"
+            name="avatar-link"
+            class="popup__text-input popup__input"
+            pattern="^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*$"
+            data-error-message="Необходимо ввести ссылку на изображение"
+            id="avatar-link-input"
+            required
+          >
+          <span class="popup__error avatar-link-input-error"></span>
+        </label>
+        <button type="submit" class="popup__button-save">Сохранить</button>
+      </form>
+      <button type="button" class="popup__button-close"></button>
+    </div>
+  </div>
   <div class="popup popup_type_show-image">
     <div class="popup__container popup__container_type_image">
       <img src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg" alt="Увеличенное изображение Пейзажа" class="popup__image">
@@ -116,7 +143,10 @@
       <div class="element__image"></div>
       <div class="element__info">
         <h2 class="element__title"></h2>
-        <button type="button" class="element__button-like"></button>
+        <div class="element__like-container">
+          <button type="button" class="element__button-like"></button>
+          <span class="element__likes-count">5</span>
+        </div>
       </div>
     </div>
   </template>

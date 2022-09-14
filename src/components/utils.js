@@ -1,30 +1,3 @@
-export const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
 const elementCard = document.querySelector('#element').content;
 const elementsContainer = document.querySelector('.elements');
 
@@ -45,6 +18,11 @@ const nameInput = profileEditPopup.querySelector('input[name="name"]');
 const descriptionInput = profileEditPopup.querySelector('input[name="description"]');
 const profileName = profileContainer.querySelector('.profile__name');
 const profileDescription = profileContainer.querySelector('.profile__description');
+const profileAvatar = profileContainer.querySelector('.profile__avatar');
+const profileAvatarOverlay = profileContainer.querySelector('.profile__avatar-overlay');
+
+const avatarEditPopup = document.querySelector('.popup_type_change-avatar');
+const avatarEditForm = avatarEditPopup.querySelector('.popup__form');
 
 const imagePopup = document.querySelector('.popup_type_show-image');
 const imagePopupDescription = imagePopup.querySelector('.popup__description');
@@ -65,5 +43,6 @@ export {
   elementCard, elementsContainer, cardAddPopup, cardAddPopupOpenButton, cardAddPopupCloseButton,
   cardAddPopupForm, newCardImageInput, newCardTitleInput, profileContainer, profileEditButton, profileEditPopup,
   profileEditPopupCloseButton, profileEditPopupForm, nameInput, descriptionInput, profileName, profileDescription,
-  imagePopup, imagePopupDescription, imagePopupCloseButton, imagePopupPicture, popupsList, validateSettings,
+  profileAvatar, imagePopup, imagePopupDescription, imagePopupCloseButton, imagePopupPicture, popupsList, validateSettings,
+  profileAvatarOverlay, avatarEditPopup, avatarEditForm
 }
